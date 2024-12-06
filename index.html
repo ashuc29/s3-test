@@ -1,6 +1,53 @@
-<html>
-
+il<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission V2</title>
+</head>
 <body>
-    <p> Hello World !!!</p>
+    <h1>Submit Your Details</h1>
+    <form id="submissionForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="responseMessage" style="color: green;"></p>
+    <p id="errorMessage" style="color: red;"></p>
+
+    <script>
+        document.getElementById('submissionForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the form from refreshing the page
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const apiEndpoint = 'https://5f4hosat20.execute-api.eu-west-1.amazonaws.com/default/nicostore';
+
+            // Build the query string
+            const queryString = `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+
+            try {
+                const response = await fetch(apiEndpoint + queryString, {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.text(); // Assuming the API returns plain text
+                document.getElementById('responseMessage').textContent = 'Form submitted successfully! Response: ' + data;
+                document.getElementById('errorMessage').textContent = '';
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = 'There was an error submitting the form: ' + error.message;
+                document.getElementById('responseMessage').textContent = '';
+            }
+        });
+    </script>
 </body>
 </html>
