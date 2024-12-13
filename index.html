@@ -30,7 +30,7 @@
         
 
             // Build the query string
-            const queryString = `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+            const queryString = `?param1=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
 
             try {
                 const response = await fetch(apiEndpoint + queryString, {
